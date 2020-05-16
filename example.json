@@ -1,0 +1,35 @@
+{
+    "coord": { "lon": -95.43, "lat": 29.69 },
+    "weather": [
+        {
+            "id": 804,
+            "main": "Clouds",
+            "description": "overcast clouds",
+            "icon": "04d"
+        }
+    ],
+    "base": "stations",
+    "main": {
+        "temp": 292.54,
+        "feels_like": 292.54,
+        "temp_min": 292.04,
+        "temp_max": 293.15,
+        "pressure": 1006,
+        "humidity": 88
+    },
+    "visibility": 16093,
+    "wind": { "speed": 3.6, "deg": 240 },
+    "clouds": { "all": 90 },
+    "dt": 1589639450,
+    "sys": {
+        "type": 1,
+        "id": 4404,
+        "country": "US",
+        "sunrise": 1589628485,
+        "sunset": 1589677700
+    },
+    "timezone": -18000,
+    "id": 0,
+    "name": "Houston",
+    "cod": 200
+}
