@@ -9,7 +9,7 @@ fn main() {
         .version("0.0.1")
         .author("Travis Lekich <ttlekich@gmail.com")
         .about("Get your weather on the command line.")
-        .arg("-c, --city=[CITY] 'See the weather for a particular city.'")
+        .arg("-z, --zip=[ZIP] 'weather by zip code.'")
         .arg("-d... 'Turn debugging information on'")
         .get_matches();
 
@@ -18,11 +18,11 @@ fn main() {
         println!("Value for output: {}", o);
     }
 
-    if let Some(c) = matches.value_of("city") {
-        println!("Value for city: {}", c);
+    if let Some(z) = matches.value_of("zip") {
+        let resp = api::fetch_weather_by_zip(z);
+        println!("{:#?}", resp);
     }
 
-    let res = api::fetch_weather_by_zip();
 
     // You can see how many times a particular flag or argument occurred
     // Note, only flags can have multiple occurrences
