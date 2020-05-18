@@ -10,19 +10,21 @@ fn main() {
         .author("Travis Lekich <ttlekich@gmail.com")
         .about("Get your weather on the command line.")
         .arg("-z, --zip=[ZIP] 'weather by zip code.'")
+        .arg("-c, --city=[CITY] 'weather by city.'")
         .arg("-d... 'Turn debugging information on'")
         .get_matches();
 
-    // You can check the value provided by positional arguments, or option arguments
-    if let Some(o) = matches.value_of("output") {
-        println!("Value for output: {}", o);
-    }
 
     if let Some(z) = matches.value_of("zip") {
-        let resp = api::fetch_weather_by_zip(z);
+        // let resp = api::fetch_weather_by_zip(z);
+        let resp = api::fetch_forecast_by_zip(z);
         println!("{:#?}", resp);
     }
 
+    if let Some(c) = matches.value_of("city") {
+        let resp = api::fetch_weather_by_city(c);
+        println!("{:#?}", resp);
+    }
 
     // You can see how many times a particular flag or argument occurred
     // Note, only flags can have multiple occurrences
