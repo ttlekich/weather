@@ -1,5 +1,5 @@
 mod api;
-use clap::App;
+use clap::{App, Arg};
 
 #[macro_use]
 extern crate dotenv_codegen;
@@ -9,48 +9,31 @@ fn main() {
         .version("0.0.1")
         .author("Travis Lekich <ttlekich@gmail.com")
         .about("Get your weather on the command line.")
-        .arg("-z, --zip=[ZIP] 'by zip code.'")
-        .arg("-c, --city=[CITY] 'by city.'")
-        .arg("-f, --forecast 'forecast.'")
-        .arg("-w, --weather 'current weather.'")
-        .arg("-d... 'Turn debugging information on'")
+        .arg(Arg::with_name("city").short("c").long("city").help("by city").takes_value(true).value_name("city"))
+        .arg(Arg::with_name("zip").short("z").long("zip").help("by zip").takes_value(true).value_name("zip"))
+        .arg(Arg::with_name("forecast").short("f").long("forecast").help("5 day forecast"))
+        .arg(Arg::with_name("weather").short("w").long("weather").help("current weather"))
         .get_matches();
 
-
     if let Some(z) = matches.value_of("zip") {
-        // TODO how to get simple flags off of App?
-        if let 1 = matches.occurrences_of("w") {
+        if matches.is_present("weather") {
             let resp = api::fetch_weather_by_zip(z);
             println!("{:#?}", resp);
         }
-        if let 1 = matches.occurrences_of("f") {
+        if matches.is_present("forecast") {
             let resp = api::fetch_forecast_by_zip(z);
             println!("{:#?}", resp);
         }
-        let resp = api::fetch_weather_by_zip(z);
-        println!("{:#?}", resp);
     }
 
     if let Some(c) = matches.value_of("city") {
-        if let Some(_) = matches.value_of("weather") {
+        if matches.is_present("weather") {
             let resp = api::fetch_weather_by_city(c);
             println!("{:#?}", resp);
         }
-        if let Some(_) = matches.value_of("forecast") {
+        if matches.is_present("forecast") {
             let resp = api::fetch_weather_by_city(c);
             println!("{:#?}", resp);
         }
     }
-
-    // You can see how many times a particular flag or argument occurred
-    // Note, only flags can have multiple occurrences
-    match matches.occurrences_of("d") {
-        0 => println!("Debug mode is off"),
-        1 => println!("Debug mode is kind of on"),
-        2 => println!("Debug mode is on"),
-        _ => println!("Don't be crazy"),
-    }
-
-
-    // Continued program logic goes here...
 }
