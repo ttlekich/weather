@@ -1,4 +1,5 @@
 mod api;
+mod format;
 use clap::{App, Arg};
 
 #[macro_use]
@@ -18,7 +19,10 @@ fn main() {
     if let Some(z) = matches.value_of("zip") {
         if matches.is_present("weather") {
             let resp = api::fetch_weather_by_zip(z);
-            println!("{:#?}", resp);
+            match resp {
+                Ok(data) => format::format_weather(&data),
+                Err(error) => println!("{:#?}", error)
+            }
         }
         if matches.is_present("forecast") {
             let resp = api::fetch_forecast_by_zip(z);

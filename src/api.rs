@@ -9,64 +9,64 @@ const WEATHER_API_KEY: &str = dotenv!("WEATHER_API_KEY");
 // serde-rs / json for json to struct
 
 #[derive(Serialize, Deserialize, Debug)]
-struct Coord {
-    lon: f64,
-    lat: f64
+pub struct Coord {
+    pub lon: f64,
+    pub lat: f64
 }
 
 #[derive(Serialize, Deserialize, Debug)]
-struct Weather {
-    id: f64,
-    main: String,
-    description: String,
-    icon: String
+pub struct Weather {
+    pub id: f64,
+    pub main: String,
+    pub description: String,
+    pub icon: String
 }
 
 #[derive(Serialize, Deserialize, Debug)]
-struct MainWeather {
-    temp: f64,
-    feels_like: f64,
-    temp_min: f64,
-    temp_max: f64,
-    pressure: f64, // Maybe int
-    humidity: f64  // Maybe int
+pub struct MainWeather {
+    pub temp: f64,
+    pub feels_like: f64,
+    pub temp_min: f64,
+    pub temp_max: f64,
+    pub pressure: f64, // Maybe int
+    pub humidity: f64  // Maybe int
 }
 
 #[derive(Serialize, Deserialize, Debug)]
-struct Wind {
-    speed: f64,
-    deg: f64
+pub struct Wind {
+    pub speed: f64,
+    pub deg: f64
 }
 
 #[derive(Serialize, Deserialize, Debug)]
-struct Clouds {
-    all: f64
+pub struct Clouds {
+    pub all: f64
 }
 
 #[derive(Serialize, Deserialize, Debug)]
-struct Sys {
-    r#type: i64,
-    id: i64,
-    country: String,
-    sunrise: i64,
-    sunset: i64
+pub struct Sys {
+    pub r#type: i64,
+    pub id: i64,
+    pub country: String,
+    pub sunrise: i64,
+    pub sunset: i64
 }
 
 
 #[derive(Serialize, Deserialize, Debug)]
 pub struct WeatherAPIResponse {
-    coord: Coord,
-    weather: Vec<Weather>,
-    main: MainWeather,
+    pub coord: Coord,
+    pub weather: Vec<Weather>,
+    pub main: MainWeather,
     // visibility: f64, TODO change to optional 
-    wind: Wind,
-    clouds: Clouds,
+    pub wind: Wind,
+    pub clouds: Clouds,
     dt: f64,
-    sys: Sys,
+    pub sys: Sys,
     timezone: f64,
     id: f64,
     cod: f64,
-    name: String,
+    pub name: String,
 }
 
 #[derive(Serialize, Deserialize, Debug)]
