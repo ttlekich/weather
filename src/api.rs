@@ -1,17 +1,12 @@
-// use reqwest::Error;
 use serde::{Deserialize, Serialize};
-// use serde_json::Result;
-
 
 const BASE_URL: &str = "https://api.openweathermap.org/data/2.5/";
 const WEATHER_API_KEY: &str = dotenv!("WEATHER_API_KEY");
 
-// serde-rs / json for json to struct
-
 #[derive(Serialize, Deserialize, Debug)]
 pub struct Coord {
     pub lon: f64,
-    pub lat: f64
+    pub lat: f64,
 }
 
 #[derive(Serialize, Deserialize, Debug)]
@@ -19,7 +14,7 @@ pub struct Weather {
     pub id: f64,
     pub main: String,
     pub description: String,
-    pub icon: String
+    pub icon: String,
 }
 
 #[derive(Serialize, Deserialize, Debug)]
@@ -29,18 +24,18 @@ pub struct MainWeather {
     pub temp_min: f64,
     pub temp_max: f64,
     pub pressure: f64, // Maybe int
-    pub humidity: f64  // Maybe int
+    pub humidity: f64, // Maybe int
 }
 
 #[derive(Serialize, Deserialize, Debug)]
 pub struct Wind {
     pub speed: f64,
-    pub deg: f64
+    pub deg: f64,
 }
 
 #[derive(Serialize, Deserialize, Debug)]
 pub struct Clouds {
-    pub all: f64
+    pub all: f64,
 }
 
 #[derive(Serialize, Deserialize, Debug)]
@@ -49,16 +44,15 @@ pub struct Sys {
     pub id: i64,
     pub country: String,
     pub sunrise: i64,
-    pub sunset: i64
+    pub sunset: i64,
 }
-
 
 #[derive(Serialize, Deserialize, Debug)]
 pub struct WeatherAPIResponse {
     pub coord: Coord,
     pub weather: Vec<Weather>,
     pub main: MainWeather,
-    // visibility: f64, TODO change to optional 
+    // visibility: f64, TODO change to optional
     pub wind: Wind,
     pub clouds: Clouds,
     dt: f64,
@@ -76,7 +70,7 @@ pub struct City {
     country: String,
     timezone: f64,
     sunrise: f64,
-    sunset: f64 
+    sunset: f64,
 }
 
 #[derive(Serialize, Deserialize, Debug)]
@@ -85,60 +79,52 @@ pub struct ForecastResponse {
     message: f64,
     cnt: i64,
     city: City,
-    list: Vec<ForecastItem>
+    pub list: Vec<ForecastItem>,
 }
 
 #[derive(Serialize, Deserialize, Debug)]
 pub struct ForecastItem {
-    dt: i64,
-    main: MainWeather,
-    weather: Vec<Weather>,
+    pub dt: i64,
+    pub main: MainWeather,
+    pub weather: Vec<Weather>,
     clouds: Clouds,
     wind: Wind,
-    sys: ForecastSys, 
+    sys: ForecastSys,
     dt_txt: String,
 }
 
 #[derive(Serialize, Deserialize, Debug)]
 pub struct ForecastSys {
-    pod: String 
-} 
-
+    pod: String,
+}
 
 #[tokio::main]
-pub async fn fetch_forecast_by_zip(zip: &str) -> Result<ForecastResponse, Box<dyn std::error::Error>> {
+pub async fn fetch_forecast_by_zip(
+    zip: &str,
+) -> Result<ForecastResponse, Box<dyn std::error::Error>> {
     let url = format!("{}forecast?zip={}&appid={}", BASE_URL, zip, WEATHER_API_KEY);
-    println!("{}", url);
-    let resp = reqwest::get(&url)
-        .await?
-        .text()
-        .await?;
-    println!("{:#?}", resp);
+    let resp = reqwest::get(&url).await?.text().await?;
     let typed_resp: ForecastResponse = serde_json::from_str(&resp)?;
     Ok(typed_resp)
 }
 
 #[tokio::main]
-pub async fn fetch_weather_by_zip(zip: &str) -> Result<WeatherAPIResponse, Box<dyn std::error::Error>> {
+pub async fn fetch_weather_by_zip(
+    zip: &str,
+) -> Result<WeatherAPIResponse, Box<dyn std::error::Error>> {
     let url = format!("{}weather?zip={}&appid={}", BASE_URL, zip, WEATHER_API_KEY);
-    println!("{}", url);
-    let resp = reqwest::get(&url)
-        .await?
-        .text()
-        .await?;
+    let resp = reqwest::get(&url).await?.text().await?;
     let typed_resp: WeatherAPIResponse = serde_json::from_str(&resp)?;
     Ok(typed_resp)
 }
 
 
 #[tokio::main]
-pub async fn fetch_weather_by_city(city: &str) -> Result<WeatherAPIResponse, Box<dyn std::error::Error>> {
+pub async fn fetch_weather_by_city(
+    city: &str,
+) -> Result<WeatherAPIResponse, Box<dyn std::error::Error>> {
     let url = format!("{}weather?q={}&appid={}", BASE_URL, city, WEATHER_API_KEY);
-    println!("{}", url);
-    let resp = reqwest::get(&url)
-        .await?
-        .text()
-        .await?;
+    let resp = reqwest::get(&url).await?.text().await?;
     let typed_resp: WeatherAPIResponse = serde_json::from_str(&resp)?;
     Ok(typed_resp)
 }

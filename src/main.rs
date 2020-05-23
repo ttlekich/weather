@@ -10,9 +10,10 @@ fn main() {
         .version("0.0.1")
         .author("Travis Lekich <ttlekich@gmail.com")
         .about("Get your weather on the command line.")
-        .arg(Arg::with_name("city").short("c").long("city").help("by city").takes_value(true).value_name("city"))
+        // TODO
+        // .arg(Arg::with_name("city").short("c").long("city").help("by city").takes_value(true).value_name("city"))
         .arg(Arg::with_name("zip").short("z").long("zip").help("by zip").takes_value(true).value_name("zip"))
-        .arg(Arg::with_name("forecast").short("f").long("forecast").help("5 day forecast"))
+        .arg(Arg::with_name("forecast").short("f").long("forecast").help("5 day forecast, every 3 hours."))
         .arg(Arg::with_name("weather").short("w").long("weather").help("current weather"))
         .get_matches();
 
@@ -26,18 +27,22 @@ fn main() {
         }
         if matches.is_present("forecast") {
             let resp = api::fetch_forecast_by_zip(z);
-            println!("{:#?}", resp);
+            match resp {
+                Ok(data) => format::format_forecast(&data),
+                Err(error) => println!("{:#?}", error)
+            }
         }
     }
 
-    if let Some(c) = matches.value_of("city") {
-        if matches.is_present("weather") {
-            let resp = api::fetch_weather_by_city(c);
-            println!("{:#?}", resp);
-        }
-        if matches.is_present("forecast") {
-            let resp = api::fetch_weather_by_city(c);
-            println!("{:#?}", resp);
-        }
-    }
+    // TODO
+    // if let Some(c) = matches.value_of("city") {
+    //     if matches.is_present("weather") {
+    //         let resp = api::fetch_weather_by_city(c);
+    //         println!("{:#?}", resp);
+    //     }
+    //     if matches.is_present("forecast") {
+    //         let resp = api::fetch_weather_by_city(c);
+    //         println!("{:#?}", resp);
+    //     }
+    // }
 }
